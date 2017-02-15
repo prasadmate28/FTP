@@ -12,14 +12,14 @@ Problem Statement: To design and implement simple FTP Client and Server
 Commands:
 ---------
 We have implemented the following FTP commands. The syntax of the command is indicated in the parenthesis.
-1. get (get <remote_filename>) -- Copy file with the name <remote_filename> from remote directory to local directory.
-2. put (put <local_filename>) -- Copy file with the name <local_filename> from local directory to remote directory.
-3. delete (delete <remote_filename>) – Delete the file with the name <remote_filename> from the remote directory.
-4. ls (ls) -- List the files and subdirectories in the remote directory.
-5. cd (cd <remote_direcotry_name> or cd ..) – Change to the <remote_direcotry_name > on the remote machine or change to the parent directory of the current directory
-6. mkdir (mkdir <remote_directory_name>) – Create directory named <remote_direcotry_name> as the sub-directory of the current working directory on the remote machine.
-7. pwd (pwd) – Print the current working directory on the remote machine.
-8. quit (quit) – End the FTP session.
+- get (get <remote_filename>) -- Copy file with the name <remote_filename> from remote directory to local directory.
+- put (put <local_filename>) -- Copy file with the name <local_filename> from local directory to remote directory.
+- delete (delete <remote_filename>) – Delete the file with the name <remote_filename> from the remote directory.
+- ls (ls) -- List the files and subdirectories in the remote directory.
+- cd (cd <remote_direcotry_name> or cd ..) – Change to the <remote_direcotry_name > on the remote machine or change to the parent directory of the current directory
+- mkdir (mkdir <remote_directory_name>) – Create directory named <remote_direcotry_name> as the sub-directory of the current working directory on the remote machine.
+- pwd (pwd) – Print the current working directory on the remote machine.
+- quit (quit) – End the FTP session.
 
 FTP Server (myftpserver):
 ------------------------
@@ -29,7 +29,8 @@ FTP Client (myftp):
 ------------------
 The ftp client program takes two command line parameters, the machine name where the server resides and the port number. Once the client starts up, it displays a prompt “mytftp>”. It then accepts and executes commands by relaying the commands to the server and displays results and error messages where appropriate. The client terminates when the user enters the “quit” command.
 
-Execution: 
+Execution:
+---------
 The project is developed using Eclipse.
 To execute myftpserver, goto bin directory and run 'java com.ds.server.myftpserver <portNumber>'
 To execute myftp, goto bin directory and run 'java com.ds.client.myftp <ipAddress> <portNumber>'
