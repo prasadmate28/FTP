@@ -11,12 +11,12 @@ Problem Statement: To design and implement simple FTP Client and Server
 Commands:
 ---------
 We have implemented the following FTP commands. The syntax of the command is indicated in the parenthesis.
-- get (get <remote_filename>) -- Copy file with the name <remote_filename> from remote directory to local directory.
-- put (put <local_filename>) -- Copy file with the name <local_filename> from local directory to remote directory.
-- delete (delete <remote_filename>) – Delete the file with the name <remote_filename> from the remote directory.
+- get (get remote_filename) -- Copy file with the name <remote_filename> from remote directory to local directory.
+- put (put local_filename) -- Copy file with the name <local_filename> from local directory to remote directory.
+- delete (delete remote_filename) – Delete the file with the name <remote_filename> from the remote directory.
 - ls (ls) -- List the files and subdirectories in the remote directory.
-- cd (cd <remote_direcotry_name> or cd ..) – Change to the <remote_direcotry_name > on the remote machine or change to the parent directory of the current directory
-- mkdir (mkdir <remote_directory_name>) – Create directory named <remote_direcotry_name> as the sub-directory of the current working directory on the remote machine.
+- cd (cd remote_directory_name or cd ..) – Change to the <remote_direcotry_name > on the remote machine or change to the parent directory of the current directory
+- mkdir (mkdir remote_directory_name) – Create directory named <remote_direcotry_name> as the sub-directory of the current working directory on the remote machine.
 - pwd (pwd) – Print the current working directory on the remote machine.
 - quit (quit) – End the FTP session.
 
@@ -31,8 +31,8 @@ The ftp client program takes two command line parameters, the machine name where
 Execution:
 ---------
 The project is developed using Eclipse.
-- To execute myftpserver, goto bin directory and run 'java com.ds.server.myftpserver <portNumber>'
-- To execute myftp, goto bin directory and run 'java com.ds.client.myftp <ipAddress> <portNumber>'
+- To execute myftpserver, goto bin directory and run 'java com.ds.server.myftpserver portNumber'
+- To execute myftp, goto bin directory and run 'java com.ds.client.myftp ipAddress portNumber'
 
 Note: This project was done in its entirety by Prasad Mate and Sharmin Pathan. We hereby state that we have not received unauthorized help of any form. The project description is taken from the description provided in CSCI 6780.
 
