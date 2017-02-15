@@ -1,5 +1,4 @@
 # FTP
-Simple FTP Client Server
 
 Distributed Computing Systems (Spring 2017 CSCI 6780) - Project 1
 
@@ -32,8 +31,8 @@ The ftp client program takes two command line parameters, the machine name where
 Execution:
 ---------
 The project is developed using Eclipse.
-To execute myftpserver, goto bin directory and run 'java com.ds.server.myftpserver <portNumber>'
-To execute myftp, goto bin directory and run 'java com.ds.client.myftp <ipAddress> <portNumber>'
+- To execute myftpserver, goto bin directory and run 'java com.ds.server.myftpserver <portNumber>'
+- To execute myftp, goto bin directory and run 'java com.ds.client.myftp <ipAddress> <portNumber>'
 
 Note: This project was done in its entirety by Prasad Mate and Sharmin Pathan. We hereby state that we have not received unauthorized help of any form. The project description is taken from the description provided in CSCI 6780.
 
