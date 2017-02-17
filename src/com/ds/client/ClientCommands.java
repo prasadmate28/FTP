@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class ClientCommands {
 
 	static final String PROMPT = "myftp> ";
-	static final String ROOT = System.getProperty("user.dir");
+	
     DataInputStream dInput;
     DataOutputStream dOutput;
     Scanner sc;
@@ -84,7 +84,8 @@ public class ClientCommands {
 	        fin.close();
 	        System.err.println(readFromInpLine());
 		}catch (IOException ioe){
-			ioe.printStackTrace();
+			System.out.println(" Exception in upload file method :: "+ ioe.getMessage());
+			//ioe.printStackTrace();
 		}
 	}
 
@@ -94,7 +95,8 @@ public class ClientCommands {
 		try{
 			dOutput.writeUTF(writeMsg);
 		}catch(IOException e){
-			e.printStackTrace();
+			System.out.println("Exception in write on outputline method :: "+e.getMessage());
+			//e.printStackTrace();
 		}
 	}
 
@@ -108,8 +110,8 @@ public class ClientCommands {
             //this.socket.close();
             
         }catch(Exception e){
-        	System.out.println("Error while releasing client resourcess :::" );
-        	e.printStackTrace();
+        	System.out.println("Error while releasing client resourcess :::"+ e.getMessage());
+        	//e.printStackTrace();
         }
 	}
 	
@@ -119,7 +121,8 @@ public class ClientCommands {
 	    	try{
 	    		IOread = dInput.readUTF();
 	    	}catch (IOException ioe){
-	    		ioe.printStackTrace();
+	    		System.out.println("Exception in reading from input line :: "+ ioe.getMessage());
+	    		//ioe.printStackTrace();
 	    	}
 			return IOread;
 		}
@@ -139,7 +142,8 @@ public class ClientCommands {
 	            System.err.println(readFromInpLine());
 	            
 			}catch (IOException ioe){
-				ioe.printStackTrace();
+				System.out.println(" Exception in downloading file ::: " + ioe.getMessage()) ;
+				//ioe.printStackTrace();
 			}
 		}
 
@@ -147,11 +151,15 @@ public class ClientCommands {
 		private String getFileName(String param) {
 			// TODO Auto-generated method stub
 			String retFileName = null;
-			if(param.contains(File.separator)){
-				String p[] = param.split(File.separator);
-				retFileName = p[p.length - 1];
-			}else{
-				retFileName = param;
+			try{
+				if(param.contains(File.separator)){
+					String p[] = param.split(File.separator);
+					retFileName = p[p.length - 1];
+				}else{
+					retFileName = param;
+				}
+			}catch (Exception e){
+				System.out.println("Exception in getfileName :: " + e.getMessage());
 			}
 	    	return retFileName;
 		}
@@ -194,8 +202,8 @@ public class ClientCommands {
 			// TODO Auto-generated method stub
 			try{
 				writeOnOutpLine(command);
-				System.err.println(dInput.readUTF());
-			}catch(IOException ioe){
+				System.err.println(readFromInpLine());
+			}catch(Exception ioe){
 				System.out.println("Exception in delete function:: "+ ioe.getMessage());
 			}
 		}
@@ -205,8 +213,8 @@ public class ClientCommands {
 			// TODO Auto-generated method stub
 			try{
 				writeOnOutpLine(command);
-				System.err.println(dInput.readUTF());
-			}catch(IOException ioe){
+				System.err.println(readFromInpLine());
+			}catch(Exception ioe){
 				System.out.println("Exception in delete function:: "+ ioe.getMessage());
 			}
 		}
