@@ -39,7 +39,7 @@ public class MyftpServerUtil {
 				//fileNames.add(f.getName());
 	
 		}catch(Exception e){
-			System.out.println("----Exception in LS command execution -----"+e);
+			System.out.println("----Exception in LS command execution -----"+e.getMessage());
 		}
 		return directoryList.toString();
 	}
@@ -51,7 +51,7 @@ public class MyftpServerUtil {
 		try{
 			 currentDirectory = System.getProperty(ROOT);
 		}catch(Exception e){
-			System.out.println("----Exception in PWD command execution -----"+e);
+			System.out.println("----Exception in PWD command execution -----"+e.getMessage());
 		}
 		return currentDirectory;
 	}
@@ -63,59 +63,67 @@ public class MyftpServerUtil {
 			
 			if(dirPath.equals("..")){
 				File curr = new File(executePWD());
-				System.setProperty(ROOT, curr.getAbsoluteFile().getParent());
+				if(curr.getAbsoluteFile().getParent() != null)
+					System.setProperty(ROOT, curr.getAbsoluteFile().getParent());
+				else
+					System.out.println("::: Reached root directory :::" + ROOT);
 				retStatus = "Directory changed successfully";
 			}else{
 				File current = new File(System.getProperty(ROOT) + File.separator +dirPath);
 				System.out.println("Inside CD ::" + current.getAbsolutePath());
 				if(current.exists() && current.isDirectory()){
 					System.setProperty(ROOT, current.getAbsoluteFile().getPath());
-					retStatus = "Directory changed successfully";
+					retStatus = ":::: Directory changed successfully ::::";
 				}
 				else
 					retStatus = "Directory does not exist. Enter correct directory name and try again.";
 			}
 			
 		}catch(Exception e){
-			System.out.println("----Exception in CD command execution -----"+e);
+			System.out.println("----Exception in CD command execution -----"+e.getMessage());
 		}
 		
 		return retStatus; 
 	}
 
 
-	public static void executeMKDIR(String parameters) {
+	public static boolean executeMKDIR(String parameters) {
 		// TODO Auto-generated method stub
+		boolean mkdirStatus = false;
 		try{
 			File newDir = new File(executePWD()+File.separator+parameters);
 			if(!newDir.exists()){
-				newDir.mkdir();
+				mkdirStatus = newDir.mkdir();
+				System.out.println("Is directory created ? " + mkdirStatus);
 			}else{
-				System.out.println("directory already exists");
-				return;
+				System.out.println("directory already exist");
+				mkdirStatus = false;
 			}
 			
 		}catch(Exception e){
-			System.out.println("Exception in mkdir" + e);
+			System.out.println("Exception in mkdir command execution" + e.getMessage());
 		}
-		
+		return mkdirStatus;
 	}
 
 
-	public static void executeDELETE(String parameters) {
+	public static boolean executeDELETE(String parameters) {
 		// TODO Auto-generated method stub
+		boolean deleteStatus = false;
 		try{
 			File file = new File(executePWD()+File.separator+parameters);
 			if(file.exists()){
-				file.delete();
+				deleteStatus = file.delete();
+				System.out.println("is delete successful ? " + deleteStatus);
 			}
-			else{
-				System.out.println("file does not exist");
-				return;
+			else{				
+				System.out.println(":::: File does not exist ::: File:: " + executePWD()+File.separator+parameters);
+				deleteStatus = false;
 			}
 		}catch(Exception e){
-			System.out.println("Exception in execute delete command"+e);
+			System.out.println("Exception in execute delete command"+e.getMessage());
 		}
+		return deleteStatus;
 	}
 
 
@@ -130,10 +138,10 @@ public class MyftpServerUtil {
 				getFile = new File(executePWD()+File.separator+fileName);
 			}
 			//File getFile = new File(fileName);
-			System.out.println("server path::"+getFile.getAbsolutePath());
+			System.out.println(":::: getting file from Server path :: "+getFile.getAbsolutePath());
 			if(getFile.exists()){
 				sockOutp.writeUTF("READY");//send status1
-				System.out.println("Server ready to send the file...");
+				System.out.println(":::: Server ready to send the file... ");
 				//----begin sending file to client-----
 				FileInputStream fin = new FileInputStream(getFile);
 				int ch;
@@ -142,16 +150,15 @@ public class MyftpServerUtil {
 		            sockOutp.writeUTF(String.valueOf(ch));
 		        }while(ch != -1);
 		        fin.close();
-                System.out.println(")
 				//-----end----
 				sockOutp.writeUTF("Server: File "+fileName+" sent successfully");
 			}else{
 				sockOutp.writeUTF("File Not Found");//send status2
-				System.out.println("GET file does not exist");
+				System.out.println(":::: GET file does not exist ::::");
 			}
 			
 		}catch(Exception e){
-			System.out.println("Exception in Get file function::"+e);
+			System.out.println("::::Exception in Get file function:: "+e.getMessage());
 		}
 	}
 
@@ -161,7 +168,9 @@ public class MyftpServerUtil {
 		try{
 			String fileName = sockInp.readUTF();
 			File putFile = new File(executePWD()+File.separator+getFileName(fileName));
-			System.out.println("Copied file from::"+putFile.getAbsolutePath());
+			
+			System.out.println(":::: PUT file being copied file from client directory path :: "+putFile.getAbsolutePath());
+			
 			if(putFile.exists()){
 				sockOutp.writeUTF("File Already Exists");
 			}else{
@@ -181,29 +190,30 @@ public class MyftpServerUtil {
 	        sockOutp.writeUTF("Server: File "+fileName+" uploaded successfully");
 			
 		}catch(Exception e){
-			
+			System.out.println(":::: Excception in executing PUT function :: "+ e.getMessage());
 		}
 	}
-
 
 	private static String getFileName(String param) {
 		// TODO Auto-generated method stub
 		String retFileName = null;
-		if(param.indexOf('\\') > -1 ){
-			//String splitRegex = Pattern.quote(System.getProperty("file.separator"));
-			//String[] p = param.split(splitRegex);
-			String[] p = param.split(Pattern.quote("\\"));
-			retFileName = p[p.length - 1];
-		}
-		else if(param.indexOf('/') > -1){
-			String[] p = param.split("/");
-			retFileName = p[p.length - 1];
-		}
-		else{
-			retFileName = param;
+		try{
+			
+			if(param.indexOf('\\') > -1 ){
+				String[] p = param.split(Pattern.quote("\\"));
+				retFileName = p[p.length - 1];
+			}
+			else if(param.indexOf('/') > -1){
+				String[] p = param.split("/");
+				retFileName = p[p.length - 1];
+			}
+			else{
+				retFileName = param;
+			}
+		}catch(Exception e){
+			System.out.println("Exception in getFileName Functions" + e.getMessage());
 		}
     	return retFileName;
 	}
-	
 
 }
