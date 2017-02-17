@@ -13,6 +13,14 @@ public class myftp {
 	DataInputStream clientSocketInp = null;
 	DataOutputStream clientSocketOut = null;
 	Scanner sc = null;
+	public static final String GET = "get";
+	public static final String PUT = "put";
+	public static final String LS = "ls";
+	public static final String MKDIR = "mkdir";
+	public static final String CD = "cd";
+	public static final String PWD = "pwd";
+	public static final String DELETE = "delete";
+	public static final String QUIT = "quit";
 	
 	public static void main (String args[]){
 		
@@ -23,9 +31,15 @@ public class myftp {
         command.cmdInputs();
         */
         myftp ftpClient = new myftp();
-        ftpClient.connectServer(args[0],args[1]);
-        System.out.println(":::::::::Connected to server successfully:::::::::");
-        ftpClient.performClientFTPFunctions();
+        
+        if(!ftpClient.connectServer(args[0],args[1])){
+        	System.out.println(" :::: Failed to establish connection with the server ::::");
+        }
+        else{
+        	System.out.println(":::::::::Connected to server successfully:::::::::");
+        	System.out.println(" Server ip ::"+ args[0] + " Port number :: "+ args [1]);
+        	ftpClient.performClientFTPFunctions();
+        }
 	}
 
 
@@ -38,11 +52,13 @@ public class myftp {
 			clientSocketInp = new DataInputStream(clientSocket.getInputStream());
 			clientSocketOut = new DataOutputStream(clientSocket.getOutputStream());
 			
+			connectionStatus = true;
 			sc = new Scanner(System.in);
 			
 		}catch(Exception e){
-			System.out.println("Exception in making connection" );
-			e.printStackTrace();
+			System.out.println("Exception in making connection " + e.getMessage());
+			//e.printStackTrace();
+			connectionStatus = false;
 		}
 		return connectionStatus;
 	}
@@ -56,7 +72,7 @@ public class myftp {
 				System.out.print(PROMPT);
 				String cmdRequest[] = sc.nextLine().split(" ", 2);
 				//if quit then release resources and exit
-				if(cmdRequest[0].equals("quit")){
+				if(cmdRequest[0].equals(QUIT)){
                 	
 					cmdRead.writeOnOutpLine(cmdRequest[0]);
                 	//dOutput.writeUTF(cmdRequest[0]);
@@ -80,38 +96,36 @@ public class myftp {
 					}*/
 					
 					switch (cmdRequest[0]) {
-	                    case "get":
+	                    case GET:
 	                    	cmdRead.get(cmdRequest[1]);
 	                        break;
-	                    case "put":
+	                    case PUT:
 	                    	cmdRead.put(cmdRequest[1]);
 	                        break;
-	                    case "delete":
+	                    case DELETE:
 	                    	cmdRead.delete(cmdRequest[0]+"#"+cmdRequest[1]);
 	                        break;
-	                    case "ls":
+	                    case LS:
 	                    	cmdRead.ls(cmdRequest[0]);
 	                        break;
-	                    case "cd":
+	                    case CD:
 	                    	cmdRead.cd(cmdRequest[0]+"#"+cmdRequest[1]);
 	                        break;
-	                    case "mkdir":   
+	                    case MKDIR:   
 	                    	cmdRead.mkdir(cmdRequest[0]+"#"+cmdRequest[1]);
 	                        break;
-	                    case "pwd":     
+	                    case PWD:     
 	                    	cmdRead.pwd(cmdRequest[0]);
 	                        break;
 	                    default:        
 	                    	System.out.println("Invalid FTP command. Please enter correct command.");
 	                    	break;
 					}
-					
 				}
-				
 			}
 		}catch(Exception e){
-			System.out.println("excception in perform client FTP functions" );
-			 e.printStackTrace();
+			System.out.println("exception in perform client FTP functions"+e.getMessage());
+			 //e.printStackTrace();
 		}
 		
 	}	
