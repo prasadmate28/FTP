@@ -4,7 +4,7 @@ Distributed Computing Systems (Spring 2017 CSCI 6780) - Project 1
 
 Team Members: Prasad Mate, Sharmin Pathan
 
-Technologies Used: Java 1.8
+Technologies Used: Java 1.8 
 
 Problem Statement: To design and implement simple FTP Client and Server
 
